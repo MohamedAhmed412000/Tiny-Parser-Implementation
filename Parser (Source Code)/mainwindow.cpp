@@ -161,3 +161,19 @@ void MainWindow::on_AutoSave_stateChanged()
 {
     autoSave = !autoSave;
 }
+
+void MainWindow::on_importCodeBTN_clicked()
+{
+    // Creating File Dialog
+    QString fileName = QFileDialog::getOpenFileName(
+                this,
+                "Import Tiny Code File",
+                ".",
+                "Text files (*.txt);; All files (*.*)");
+    ui->tinyLBL->setText(getName(fileName));
+    QFile file(fileName);
+    file.open(QIODevice::ReadOnly | QIODevice::Text);
+    QTextStream stream(&file);
+    QString code = stream.readAll();
+    ui->TinyCode->setPlainText(code);
+}

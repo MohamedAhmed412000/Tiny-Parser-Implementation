@@ -78,6 +78,7 @@ node* parser::stmt_sequence (vector<Token>list, bool& error) {
 }
 std::string parser::draw(node* root){
     file += "digraph structs {\n";
+    file += "\tedge [arrowhead = none]\n";
     drawTree(root);
     file += "}";
     return file;
@@ -94,7 +95,10 @@ void parser::drawTree(node* root){
     vector<node*> ch = root->children();
     if (ch.size() > 0) {
         for (unsigned int i = 0; i < ch.size(); i++) {
-            file += "\ts" + to_string(ch[i]->parent()->Num()) + " -> s" + to_string(count+1) + ";\n";
+            file += "\ts" + to_string(ch[i]->parent()->Num()) + " -> s" + to_string(count+1);
+            if (i == 2)
+                file += " [style = dashed]";
+            file += ";\n";
             count++;
             drawTree(ch[i]);
         }
