@@ -95,8 +95,15 @@
              </item>
             </layout>
            </item>
+           <item row="2" column="0">
+            <widget class="QPushButton" name="tokensBTN">
+             <property name="text">
+              <string>Get Tokens</string>
+             </property>
+            </widget>
+           </item>
            <item row="1" column="0">
-            <widget class="QPlainTextEdit" name="TinyCode">
+            <widget class="QTextEdit" name="TinyCode">
              <property name="font">
               <font>
                <pointsize>11</pointsize>
@@ -104,16 +111,6 @@
              </property>
              <property name="styleSheet">
               <string notr="true"/>
-             </property>
-             <property name="tabStopWidth">
-              <number>40</number>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="0">
-            <widget class="QPushButton" name="tokensBTN">
-             <property name="text">
-              <string>Get Tokens</string>
              </property>
             </widget>
            </item>
@@ -133,7 +130,7 @@
           </property>
           <layout class="QGridLayout" name="gridLayout_3">
            <item row="0" column="0">
-            <widget class="QPlainTextEdit" name="TokensList1">
+            <widget class="QTextEdit" name="TokensList1">
              <property name="enabled">
               <bool>true</bool>
              </property>
@@ -150,9 +147,6 @@
              </property>
              <property name="styleSheet">
               <string notr="true"/>
-             </property>
-             <property name="readOnly">
-              <bool>true</bool>
              </property>
             </widget>
            </item>
@@ -181,7 +175,7 @@
             </property>
             <layout class="QGridLayout" name="gridLayout_4">
              <item row="0" column="0">
-              <widget class="QPlainTextEdit" name="TokensList2">
+              <widget class="QTextEdit" name="TokensList2">
                <property name="minimumSize">
                 <size>
                  <width>0</width>
@@ -230,7 +224,7 @@
                <item>
                 <widget class="QPushButton" name="importBTN">
                  <property name="text">
-                  <string>Import Tokens from file</string>
+                  <string>Import Tokens File</string>
                  </property>
                 </widget>
                </item>
@@ -346,23 +340,27 @@
          <widget class="QGraphicsView" name="ParseTree"/>
         </item>
         <item row="1" column="0">
-         <widget class="QSlider" name="Zoom">
-          <property name="minimum">
-           <number>-100</number>
-          </property>
-          <property name="maximum">
-           <number>100</number>
-          </property>
-          <property name="singleStep">
-           <number>1</number>
-          </property>
-          <property name="pageStep">
-           <number>1</number>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-         </widget>
+         <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <item>
+           <widget class="QSlider" name="Zoom">
+            <property name="minimum">
+             <number>-100</number>
+            </property>
+            <property name="maximum">
+             <number>100</number>
+            </property>
+            <property name="singleStep">
+             <number>1</number>
+            </property>
+            <property name="pageStep">
+             <number>1</number>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
        </layout>
       </widget>

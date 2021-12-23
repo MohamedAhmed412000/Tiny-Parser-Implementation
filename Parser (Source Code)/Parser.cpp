@@ -1,6 +1,6 @@
 #include "Parser.h"
 
-int Parser_index = 0;
+unsigned int Parser_index = 0;
 
 vector<Token> readTokens(string input){
     vector<Token> list;
@@ -39,15 +39,6 @@ vector<Token> readTokens(string input){
     }
     return list;
 }
-void update(vector<Token> &in) {
-    if (in.back().Type != "SEMICOLON" && in.size()) {
-		Token x;
-		x.Type = "SEMICOLON";
-		x.Value = ";";
-		in.push_back(x);
-	}
-}
-
 void match(string in, vector<Token>list, bool& error){
     if (in == list[Parser_index].Type) {
         // qDebug() << QString::fromStdString(list[Parser_index].Type) << " - " << QString::fromStdString(list[Parser_index].Type);
@@ -55,7 +46,7 @@ void match(string in, vector<Token>list, bool& error){
 	}
     else {
         error = true;
-        // qDebug() << QString::fromStdString("match error");
+        // qDebug() << QString::fromStdString("match error" + to_string(Parser_index));
 	}
 }
 
@@ -64,16 +55,28 @@ parser::parser(){
     file = "";
     error = false;
 }
-node* parser::stmt_sequence (vector<Token>list, bool& error) {
+node* parser::program(vector<Token>list) {
+    node* root = stmt_sequence(list);
+    if (Parser_index < list.size()) {
+        error = true;
+        // qDebug() << QString::fromStdString("program error" + to_string(Parser_index) + to_string(Parser_index));
+    }
+    return root;
+}
+node* parser::stmt_sequence (vector<Token>list) {
     node* c1 = statement(list), *cur = c1;
-    Token x = list[Parser_index];
+    Token x;
+    if (Parser_index < list.size())
+        x = list[Parser_index];
     while (x.Type == "SEMICOLON" && Parser_index != list.size()-1) {
         match("SEMICOLON", list, error);
         cur->addSibling(statement(list));
         cur = cur->sibling();
-        x = list[Parser_index];
+        if (Parser_index < list.size())
+            x = list[Parser_index];
+        else
+            break;
     }
-    error = this->error;
     return c1;
 }
 std::string parser::draw(node* root){
@@ -129,7 +132,9 @@ void parser::drawTree(node* root){
 }
 node* parser::statement (vector<Token>list) {
     node* cur = NULL;
-    Token x = list[Parser_index];
+    Token x;
+    if (Parser_index < list.size())
+        x = list[Parser_index];
     if (x.Type == "IF")
         cur = if_stmt(list);
     else if (x.Type == "REPEAT")
@@ -142,7 +147,7 @@ node* parser::statement (vector<Token>list) {
         cur = write_stmt(list);
     else {
         error = true;
-        // qDebug() << QString::fromStdString("statement error");
+        // qDebug() << QString::fromStdString("statement error" + to_string(Parser_index));
     }
     return cur;
 }
@@ -151,11 +156,13 @@ node* parser::if_stmt (vector<Token>list) {
     match("IF", list, error);
     cur->addChild(exp(list));
     match("THEN", list, error);
-    cur->addChild(stmt_sequence(list, error));
-    Token x = list[Parser_index];
+    cur->addChild(stmt_sequence(list));
+    Token x;
+    if (Parser_index < list.size())
+        x = list[Parser_index];
     if (x.Type == "ELSE") {
         match("ELSE", list, error);
-        cur->addChild(stmt_sequence(list, error));
+        cur->addChild(stmt_sequence(list));
     }
     match("END", list, error);
     return cur;
@@ -163,7 +170,7 @@ node* parser::if_stmt (vector<Token>list) {
 node* parser::repeat_stmt (vector<Token>list) {
     node *cur = new node("REPEAT", "", 'R');
     match("REPEAT", list, error);
-    cur->addChild(stmt_sequence(list, error));
+    cur->addChild(stmt_sequence(list));
     match("UNTIL", list, error);
     cur->addChild(exp(list));
     return cur;
@@ -189,7 +196,9 @@ node* parser::write_stmt (vector<Token>list) {
 }
 node* parser::exp (vector<Token>list) {
     node *cur, *c1 = simple_exp(list), *c2;
-    Token x = list[Parser_index];
+    Token x;
+    if (Parser_index < list.size())
+        x = list[Parser_index];
     if (x.Type == "LESSTHAN" || x.Type == "EQUAL") {
         cur = comparison_op(list);
         cur->addChild(c1);
@@ -200,7 +209,9 @@ node* parser::exp (vector<Token>list) {
     return c1;
 }
 node* parser::comparison_op (vector<Token>list) {
-    Token x = list[Parser_index];
+    Token x;
+    if (Parser_index < list.size())
+        x = list[Parser_index];
     node* cur = NULL;
     if (x.Type == "LESSTHAN") {
         cur = new node("OP", "<", 'O');
@@ -212,13 +223,15 @@ node* parser::comparison_op (vector<Token>list) {
     }
     else {
         error = true;
-        // qDebug() << QString::fromStdString("statement error");
+        // qDebug() << QString::fromStdString("comparison error" + to_string(Parser_index));
     }
     return cur;
 }
 node* parser::simple_exp(vector<Token>list) {
     node *cur, *c1 = term(list), *c2;
-    Token x = list[Parser_index];
+    Token x;
+    if (Parser_index < list.size())
+        x = list[Parser_index];
     while (x.Type == "PLUS" || x.Type == "MINUS") {
         cur = addop(list);
         cur->addChild(c1);
@@ -230,7 +243,9 @@ node* parser::simple_exp(vector<Token>list) {
     return c1;
 }
 node* parser::addop(vector<Token>list) {
-    Token x = list[Parser_index];
+    Token x;
+    if (Parser_index < list.size())
+        x = list[Parser_index];
     node* cur = NULL;
     if (x.Type == "PLUS") {
         cur = new node("OP", "+", 'O');
@@ -242,25 +257,32 @@ node* parser::addop(vector<Token>list) {
     }
     else {
         error = true;
-        // qDebug() << QString::fromStdString("statement error");
+        // qDebug() << QString::fromStdString("addop error" + to_string(Parser_index));
     }
     return cur;
 }
 node* parser::term(vector<Token>list) {
     node *cur, *c1 = factor(list), *c2;
-    Token x = list[Parser_index];
+    Token x;
+    if (Parser_index < list.size())
+        x = list[Parser_index];
     while (x.Type == "MULT" || x.Type == "DIV") {
         cur = mulop(list);
         cur->addChild(c1);
         c2 = factor(list);
         cur->addChild(c2);
         c1 = cur;
-        x = list[Parser_index];
+        if (Parser_index < list.size())
+            x = list[Parser_index];
+        else
+            break;
     }
     return c1;
 }
 node* parser::mulop(vector<Token>list) {
-    Token x = list[Parser_index];
+    Token x;
+    if (Parser_index < list.size())
+        x = list[Parser_index];
     node* cur = NULL;
     if (x.Type == "MULT") {
         cur = new node("OP", "*", 'O');
@@ -272,12 +294,14 @@ node* parser::mulop(vector<Token>list) {
     }
     else {
         error = true;
-        // qDebug() << QString::fromStdString("statement error");
+        // qDebug() << QString::fromStdString("mulop error" + to_string(Parser_index));
     }
     return cur;
 }
 node* parser::factor(vector<Token>list) {
-    Token x = list[Parser_index];
+    Token x;
+    if (Parser_index < list.size())
+        x = list[Parser_index];
     node* cur = NULL;
     if (x.Type == "OPENBRACKET") {
         match("OPENBRACKET", list, error);
@@ -294,19 +318,19 @@ node* parser::factor(vector<Token>list) {
     }
     else {
         error = true;
-        // qDebug() << QString::fromStdString("statement error");
+        // qDebug() << QString::fromStdString("factor error" + to_string(Parser_index));
     }
     return cur;
 }
 
-parseData drawParseTree(string tokens) {
+parseData parseTokens(string tokens) {
     // qDebug() << QString::fromStdString(tokens);
+    tokens += "\n";
     vector<Token> list = readTokens(tokens);
-    update(list);
     node* root;
     parser p;
     parseData output;
-    root = p.stmt_sequence(list, p.error);
+    root = p.program(list);
     output.check = p.error;
     // qDebug() << QString::fromStdString("Finished");
     if (!p.error)

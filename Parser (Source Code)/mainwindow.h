@@ -6,7 +6,9 @@
 #include <QFile>
 #include <QTextStream>
 #include <QGraphicsView>
-#include <QGraphicsPixmapItem>
+#include <QGraphicsSvgItem>
+#include <QProcess>
+#include <QTextEdit>
 #include "headers.h"
 
 namespace Ui {
@@ -31,7 +33,6 @@ private slots:
     void on_tabWidget_currentChanged(int index);
     void on_saveBTN_clicked();
     void on_AutoSave_stateChanged();
-
     void on_importCodeBTN_clicked();
 
 private:
