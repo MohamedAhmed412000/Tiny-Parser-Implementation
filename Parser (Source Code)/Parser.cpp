@@ -244,7 +244,10 @@ node* parser::simple_exp(vector<Token>list) {
         c2 = term(list);
         cur->addChild(c2);
         c1 = cur;
-        x = list[Parser_index];
+        if (Parser_index < list.size())
+            x = list[Parser_index];
+        else
+            break;
     }
     return c1;
 }
