@@ -2,7 +2,8 @@
 #include "ui_mainwindow.h"
 #include "Parser.h"
 #include "QCursor"
-#include "QList"
+#include <QTextEdit>
+#include <QScrollBar>
 
 string code, tokens, fileName = "tokens.txt";
 int cnt = 0;
@@ -67,17 +68,23 @@ void MainWindow::on_checkBTN_clicked()
     if (TokensSTR == "") {
         ui->checkLBL->setText("Please Enter Tokens List");
         ui->checkLBL->setStyleSheet("QLabel { font: 75 14pt \"MS Shell Dlg 2\"; }");
-//        colorize(ui->TokensList2);
+        ui->errors->setText(QString::fromStdString(""));
     }
     else {
         parseData data = parseTokens(TokensSTR);
         if (!data.check) {
             ui->checkLBL->setText("Valid Input");
             ui->checkLBL->setStyleSheet("QLabel { color : green; font: 75 14pt \"MS Shell Dlg 2\"; }");
+            ui->errors->setText(QString::fromStdString(""));
         }
         else {
             ui->checkLBL->setText("Wrong Input");
             ui->checkLBL->setStyleSheet("QLabel { color: rgb(170, 0, 0); font: 75 14pt \"MS Shell Dlg 2\"; }");
+            string errors = "";
+            for (auto i = data.errors.begin(); i != data.errors.end(); i++)
+                errors += "Error in line num. " + to_string(*i + 1) + "\n";
+            ui->errors->setText(QString::fromStdString(errors));
+            ui->errors->setStyleSheet("QLabel { color: rgb(170, 0, 0); font: 60 14pt \"MS Shell Dlg 2\"; }");
         }
     }
 }
@@ -87,12 +94,12 @@ void MainWindow::on_drawBTN_2_clicked()
     if (TokensSTR != "") {
         parseData data = parseTokens(TokensSTR);
         if (!data.check) {
+            ui->checkLBL->setText("Valid Input");
+            ui->checkLBL->setStyleSheet("QLabel { color : green; font: 75 14pt \"MS Shell Dlg 2\"; }");
+            ui->errors->setText(QString::fromStdString(""));
             createFile("graph.gv");
             writeFile(data.data, "graph.gv");
-            //system("Graphviz\\bin\\dot -Tpng graph.gv -o file.png");
-            QProcess process;
-            process.start("Graphviz\\bin\\dot",QStringList()<<"-Tsvg"<<"graph.gv"<<"-o"<<"file.svg");
-            process.waitForFinished();
+            system("Graphviz\\bin\\dot -Tsvg graph.gv -o file.svg");
             if (autoSave) {
                 system("mkdir auto_save");
                 string cmd = "auto_save\\graph" + to_string(cnt) + ".svg";
@@ -113,11 +120,17 @@ void MainWindow::on_drawBTN_2_clicked()
         else {
             ui->checkLBL->setText("Wrong Input");
             ui->checkLBL->setStyleSheet("QLabel { color: rgb(170, 0, 0); font: 75 14pt \"MS Shell Dlg 2\"; }");
+            string errorsStr = "";
+            for (auto i = data.errors.begin(); i != data.errors.end(); i++)
+                errorsStr += "Error in line num. " + to_string(*i + 1) + "\n";
+            ui->errors->setText(QString::fromStdString(errorsStr));
+            ui->errors->setStyleSheet("QLabel { color: rgb(170, 0, 0); font: 60 14pt \"MS Shell Dlg 2\"; }");
         }
     }
     else {
         ui->checkLBL->setText("Please Enter Tokens List");
         ui->checkLBL->setStyleSheet("QLabel { font: 75 14pt \"MS Shell Dlg 2\"; }");
+        ui->errors->setText(QString::fromStdString(""));
     }
 }
 void MainWindow::on_Zoom_valueChanged(int value)
@@ -170,4 +183,19 @@ void MainWindow::on_importCodeBTN_clicked()
     QTextStream stream(&file);
     QString code = stream.readAll();
     ui->TinyCode->setPlainText(code);
+}
+
+void MainWindow::on_TokensList2_textChanged()
+{
+    int count = 0;
+    string text = ui->TokensList2->toPlainText().toUtf8().constData(), numbers = "";
+    for (unsigned int i = 0; i < text.length(); i++){
+        if (text[i] == '\n')
+            count++;
+    }
+    for (int i = 1; i < count+2; i++){
+        numbers += to_string(i) + '\n';
+    }
+    ui->Numbers->setPlainText(QString::fromStdString(numbers));
+    connect(ui->TokensList2->verticalScrollBar(), SIGNAL(sliderMoved(int)), ui->Numbers->verticalScrollBar(), SLOT(setValue(int)));
 }

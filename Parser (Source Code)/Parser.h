@@ -7,6 +7,7 @@
 struct parseData {
     string data;
     bool check;
+    set<int> errors;
 };
 
 class parser

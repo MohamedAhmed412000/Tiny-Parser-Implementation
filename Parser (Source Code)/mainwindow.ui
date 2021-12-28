@@ -148,6 +148,9 @@
              <property name="styleSheet">
               <string notr="true"/>
              </property>
+             <property name="readOnly">
+              <bool>true</bool>
+             </property>
             </widget>
            </item>
           </layout>
@@ -174,7 +177,7 @@
              <string> Tokens List </string>
             </property>
             <layout class="QGridLayout" name="gridLayout_4">
-             <item row="0" column="0">
+             <item row="0" column="1">
               <widget class="QTextEdit" name="TokensList2">
                <property name="minimumSize">
                 <size>
@@ -195,6 +198,36 @@
                </property>
                <property name="styleSheet">
                 <string notr="true"/>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="0">
+              <widget class="QTextEdit" name="Numbers">
+               <property name="maximumSize">
+                <size>
+                 <width>40</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="font">
+                <font>
+                 <pointsize>11</pointsize>
+                </font>
+               </property>
+               <property name="mouseTracking">
+                <bool>false</bool>
+               </property>
+               <property name="verticalScrollBarPolicy">
+                <enum>Qt::ScrollBarAlwaysOff</enum>
+               </property>
+               <property name="horizontalScrollBarPolicy">
+                <enum>Qt::ScrollBarAlwaysOff</enum>
+               </property>
+               <property name="sizeAdjustPolicy">
+                <enum>QAbstractScrollArea::AdjustToContents</enum>
+               </property>
+               <property name="readOnly">
+                <bool>true</bool>
                </property>
               </widget>
              </item>
@@ -243,7 +276,7 @@
               <property name="maximumSize">
                <size>
                 <width>16777215</width>
-                <height>100</height>
+                <height>16777215</height>
                </size>
               </property>
               <property name="title">
@@ -259,6 +292,12 @@
                </item>
                <item alignment="Qt::AlignHCenter">
                 <widget class="QLabel" name="checkLBL">
+                 <property name="maximumSize">
+                  <size>
+                   <width>16777215</width>
+                   <height>40</height>
+                  </size>
+                 </property>
                  <property name="styleSheet">
                   <string notr="true">font: 75 14pt \&quot;MS Shell Dlg 2\&quot;;</string>
                  </property>
@@ -267,11 +306,29 @@
                  </property>
                 </widget>
                </item>
+               <item alignment="Qt::AlignHCenter">
+                <widget class="QLabel" name="errors">
+                 <property name="font">
+                  <font>
+                   <pointsize>10</pointsize>
+                  </font>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                </widget>
+               </item>
               </layout>
              </widget>
             </item>
             <item>
              <widget class="QGroupBox" name="groupBox_8">
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>100</height>
+               </size>
+              </property>
               <property name="title">
                <string> Draw Parsing Tree </string>
               </property>
@@ -283,13 +340,6 @@
                  </property>
                 </widget>
                </item>
-               <item>
-                <widget class="QLabel" name="label_2">
-                 <property name="text">
-                  <string/>
-                 </property>
-                </widget>
-               </item>
               </layout>
              </widget>
             </item>
@@ -298,7 +348,7 @@
               <property name="maximumSize">
                <size>
                 <width>16777215</width>
-                <height>16777215</height>
+                <height>100</height>
                </size>
               </property>
               <property name="title">

@@ -118,10 +118,8 @@ Token getToken(string Text){
                 state = 7;	// COMMENT STATE
             else if (isOper(Text[index]))
                 state = 8;	// REGULAR OPERATOR STATE
-            else if (Text[index] == '<')
-                state = 9;	// GREATER OR LESS STATE
             else if (Text[index] == ':')
-                state = 10;	// ASSIGN STATE
+                state = 9;	// ASSIGN STATE
             break;
         /*=========================================================================*/
         case 1:	// CHAR STATE
@@ -258,19 +256,10 @@ Token getToken(string Text){
             state = 13;	// ACCEPTING STATE
             break;
         /*=========================================================================*/
-        case 9:	// GREATER OR LESS STATE
-            if (Text[index] == '=')
+        case 9:	// ASSIGN STATE
+            if (Text[index] == '=') {
                 state = 11;	// COMPLETE EQUAL STATE
-            else{
-                x.Value = Text[index-1];
-                x.Type = Operator(x.Value[0]);
-                state = 13;	// ACCEPTING STATE
             }
-            break;
-        /*=========================================================================*/
-        case 10:	// ASSIGN STATE
-            if (Text[index] == '=')
-                state = 11;	// COMPLETE EQUAL STATE
             else {
                 state = 12;	// ERROR
                 x.Value = "Do you mean := (Assign Statement)";

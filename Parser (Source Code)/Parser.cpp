@@ -1,6 +1,8 @@
 #include "Parser.h"
+#include <set>
 
 unsigned int Parser_index = 0;
+set<int> err;
 
 vector<Token> readTokens(string input){
     vector<Token> list;
@@ -46,6 +48,7 @@ void match(string in, vector<Token>list, bool& error){
 	}
     else {
         error = true;
+        err.insert(Parser_index);
         // qDebug() << QString::fromStdString("match error" + to_string(Parser_index));
 	}
 }
@@ -59,6 +62,7 @@ node* parser::program(vector<Token>list) {
     node* root = stmt_sequence(list);
     if (Parser_index < list.size()) {
         error = true;
+        err.insert(Parser_index);
         // qDebug() << QString::fromStdString("program error" + to_string(Parser_index) + to_string(Parser_index));
     }
     return root;
@@ -147,6 +151,7 @@ node* parser::statement (vector<Token>list) {
         cur = write_stmt(list);
     else {
         error = true;
+        err.insert(Parser_index);
         // qDebug() << QString::fromStdString("statement error" + to_string(Parser_index));
     }
     return cur;
@@ -223,6 +228,7 @@ node* parser::comparison_op (vector<Token>list) {
     }
     else {
         error = true;
+        err.insert(Parser_index);
         // qDebug() << QString::fromStdString("comparison error" + to_string(Parser_index));
     }
     return cur;
@@ -257,6 +263,7 @@ node* parser::addop(vector<Token>list) {
     }
     else {
         error = true;
+        err.insert(Parser_index);
         // qDebug() << QString::fromStdString("addop error" + to_string(Parser_index));
     }
     return cur;
@@ -294,6 +301,7 @@ node* parser::mulop(vector<Token>list) {
     }
     else {
         error = true;
+        err.insert(Parser_index);
         // qDebug() << QString::fromStdString("mulop error" + to_string(Parser_index));
     }
     return cur;
@@ -318,6 +326,7 @@ node* parser::factor(vector<Token>list) {
     }
     else {
         error = true;
+        err.insert(Parser_index);
         // qDebug() << QString::fromStdString("factor error" + to_string(Parser_index));
     }
     return cur;
@@ -335,8 +344,11 @@ parseData parseTokens(string tokens) {
     // qDebug() << QString::fromStdString("Finished");
     if (!p.error)
         output.data = p.draw(root);
-    else
+    else {
         output.data = "";
+        output.errors.operator =(err);
+    }
     Parser_index = 0;
+    err.clear();
     return output;
 }

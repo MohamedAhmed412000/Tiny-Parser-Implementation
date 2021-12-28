@@ -35,6 +35,8 @@ private slots:
     void on_AutoSave_stateChanged();
     void on_importCodeBTN_clicked();
 
+    void on_TokensList2_textChanged();
+
 private:
     Ui::MainWindow *ui;
 };
