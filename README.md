@@ -54,7 +54,7 @@
 
 * [CPP](https://www.cplusplus.com/)
 * [QT5 framework](https://www.qt.io/)
-* [Graphviz](https://www.graphviz.org/)
+* [Graphviz library](https://www.graphviz.org/)
 
 
 <p align="right">(<a href="#top">back to top</a>)</p>
