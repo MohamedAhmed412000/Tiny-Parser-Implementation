@@ -7,7 +7,7 @@
   </a>
 
   <p align="center">
-    **This repo contains implementation for scanner and parser of Tiny language**
+    This repo contains implementation for scanner and parser of Tiny language
     <br />
     <a href="https://drive.google.com/file/d/1fbZ4UPeEFWRtvVoTSbfc7to7DXOMfr-G/view?usp=sharing"><strong>Explore the docs »</strong></a>
 </div>
