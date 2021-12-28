@@ -3,7 +3,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/MohamedAhmed412000/Tiny-Parser-Implementation">
-    <img src="images/ide.png" alt="Logo" width="200">
+    <img src="https://github.com/MohamedAhmed412000/Tiny-Parser-Implementation/blob/main/Images/ide.png" alt="Logo" width="200">
   </a>
 
   <p align="center">
@@ -41,9 +41,9 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-<img src="images/1.png" alt="Scanner">
-<img src="images/2.png" alt="Parser">
-<img src="images/3.png" alt="Parse Tree Draw">
+<img src="https://github.com/MohamedAhmed412000/Tiny-Parser-Implementation/blob/main/Images/1.PNG" alt="Scanner">
+<img src="https://github.com/MohamedAhmed412000/Tiny-Parser-Implementation/blob/main/Images/2.PNG" alt="Parser">
+<img src="https://github.com/MohamedAhmed412000/Tiny-Parser-Implementation/blob/main/Images/3.PNG" alt="Parse Tree Draw">
 
 
 <p align="right">(<a href="#top">back to top</a>)</p>
